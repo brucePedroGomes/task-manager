@@ -1,0 +1,66 @@
+# Prod-local mode (make prod-local). LOCAL ONLY: this is NOT a production deploy.
+# It simulates production on your computer, for a clean test: built images,
+# no code mounts, no hot reload. nginx serves the frontend build and sends
+# /api, /admin, and /static to Django. Django settings come from backend/.env.
+# For real production, see docs/backend/deploy.md.
+name: challenge
+
+# Local Postgres, Redis, and Grafana: the same as in dev mode.
+include:
+  - path: backend/compose.infra.yaml
+    env_file: backend/.env
+
+x-telemetry: &telemetry
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://lgtm:4318
+  OTEL_RESOURCE_ATTRIBUTES: service.namespace=challenge,deployment.environment.name=local
+  OTEL_SEMCONV_STABILITY_OPT_IN: http
+  OTEL_METRIC_EXPORT_INTERVAL: "10000"
+  OTEL_TRACES_SAMPLER: parentbased_always_on
+  OTEL_PYTHON_DJANGO_EXCLUDED_URLS: /health/.*,/static/.*
+
+x-backend: &backend
+  build: backend
+  env_file: backend/.env
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+services:
+  # Uses the Dockerfile's default command: gunicorn, without --reload.
+  web:
+    <<: *backend
+    environment:
+      <<: *telemetry
+      OTEL_SERVICE_NAME: challenge-web
+    ports:
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health/ready/', timeout=2).close()"
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  worker:
+    <<: *backend
+    environment:
+      <<: *telemetry
+      OTEL_SERVICE_NAME: challenge-worker
+    command: celery -A config worker --loglevel=INFO --concurrency=2
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: frontend
+      target: prod
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      web:
+        condition: service_healthy
