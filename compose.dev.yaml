@@ -1,6 +1,6 @@
 # Dev mode (make dev): hot reload for Django and Vite.
 # The backend dev stack comes from backend/compose.yaml. This file adds the frontend.
-name: challenge
+name: task-manager
 
 include:
   - path: backend/compose.yaml

@@ -2,7 +2,7 @@
 # It simulates production on your computer, for a clean test: built images,
 # no code mounts, no hot reload. nginx serves the frontend build and sends
 # /api, /admin, and /static to Django. Django settings come from backend/.env.
-name: challenge
+name: task-manager
 
 # Local Postgres, Redis, and Grafana: the same as in dev mode.
 include:
@@ -11,7 +11,7 @@ include:
 
 x-telemetry: &telemetry
   OTEL_EXPORTER_OTLP_ENDPOINT: http://lgtm:4318
-  OTEL_RESOURCE_ATTRIBUTES: service.namespace=challenge,deployment.environment.name=local
+  OTEL_RESOURCE_ATTRIBUTES: service.namespace=task-manager,deployment.environment.name=local
   OTEL_SEMCONV_STABILITY_OPT_IN: http
   OTEL_METRIC_EXPORT_INTERVAL: "10000"
   OTEL_TRACES_SAMPLER: parentbased_always_on
@@ -32,7 +32,7 @@ services:
     <<: *backend
     environment:
       <<: *telemetry
-      OTEL_SERVICE_NAME: challenge-web
+      OTEL_SERVICE_NAME: task-manager-web
       DJANGO_NUM_PROXIES: "1"
     ports:
       - "127.0.0.1:8000:8000"
@@ -51,7 +51,7 @@ services:
     <<: *backend
     environment:
       <<: *telemetry
-      OTEL_SERVICE_NAME: challenge-worker
+      OTEL_SERVICE_NAME: task-manager-worker
     command: celery -A config worker --loglevel=INFO --concurrency=2
     restart: unless-stopped
 
@@ -59,7 +59,7 @@ services:
     <<: *backend
     environment:
       <<: *telemetry
-      OTEL_SERVICE_NAME: challenge-beat
+      OTEL_SERVICE_NAME: task-manager-beat
     # Only one beat. The app user can write the schedule file in /tmp.
     command: celery -A config beat --loglevel=INFO --schedule /tmp/celerybeat-schedule
     restart: unless-stopped

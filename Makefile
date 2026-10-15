@@ -42,7 +42,7 @@ test-backend: backend/.env ## Run backend tests, coverage, and checks
 	$(TEST_PYTHON) coverage report
 	cd backend && uv run --locked pyright
 	$(TEST_PYTHON) python manage.py makemigrations --check --dry-run --settings=config.test_settings
-	$(TEST_PYTHON) python manage.py spectacular --validate --fail-on-warn --file /tmp/challenge-schema.yaml --settings=config.test_settings
+	$(TEST_PYTHON) python manage.py spectacular --validate --fail-on-warn --file /tmp/task-manager-schema.yaml --settings=config.test_settings
 
 test-frontend: ## Run frontend tests, coverage, lint, and build (needs make dev)
 	cd frontend && npm test && npm run lint && npm run build
@@ -97,7 +97,7 @@ urls: ## Show the app, API, and Grafana links
 	@echo ""
 	@echo "  App:      $(or $(APP),http://localhost:5173 (dev) / http://localhost:8080 (prod-local))"
 	@echo "  API:      http://localhost:8000/api/"
-	@echo "  Grafana:  http://localhost:3000/d/challenge-overview"
+	@echo "  Grafana:  http://localhost:3000/d/task-manager-overview"
 	@echo "            user admin, password $$(sed -n 's/^GRAFANA_ADMIN_PASSWORD=//p' backend/.env) (from backend/.env)"
 	@echo ""
 

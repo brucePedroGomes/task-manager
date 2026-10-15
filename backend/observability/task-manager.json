@@ -1,9 +1,9 @@
 {
-  "uid": "challenge-overview",
-  "title": "Challenge \u00b7 Backend",
+  "uid": "task-manager-overview",
+  "title": "Task Manager \u00b7 Backend",
   "description": "Django requests, Celery jobs, CPU and memory, traces, and application logs.",
   "tags": [
-    "challenge",
+    "task-manager",
     "django",
     "opentelemetry"
   ],
@@ -80,7 +80,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(http_server_request_duration_seconds_count{service_name=\"challenge-web\"}[$__rate_interval]))",
+          "expr": "sum(rate(http_server_request_duration_seconds_count{service_name=\"task-manager-web\"}[$__rate_interval]))",
           "legendFormat": "Requests",
           "range": true,
           "exemplar": true
@@ -135,7 +135,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_request_duration_seconds_bucket{service_name=\"challenge-web\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_request_duration_seconds_bucket{service_name=\"task-manager-web\"}[$__rate_interval])))",
           "legendFormat": "P95",
           "range": true,
           "exemplar": true
@@ -190,7 +190,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "(sum(rate(http_server_request_duration_seconds_count{service_name=\"challenge-web\",http_response_status_code=~\"5..\"}[$__rate_interval])) or vector(0)) / clamp_min(sum(rate(http_server_request_duration_seconds_count{service_name=\"challenge-web\"}[$__rate_interval])), 0.000001)",
+          "expr": "(sum(rate(http_server_request_duration_seconds_count{service_name=\"task-manager-web\",http_response_status_code=~\"5..\"}[$__rate_interval])) or vector(0)) / clamp_min(sum(rate(http_server_request_duration_seconds_count{service_name=\"task-manager-web\"}[$__rate_interval])), 0.000001)",
           "legendFormat": "5xx",
           "range": true,
           "exemplar": true
@@ -245,7 +245,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(increase(flower_task_runtime_seconds_count{service_name=\"challenge-worker\"}[$__range]))",
+          "expr": "sum(increase(flower_task_runtime_seconds_count{service_name=\"task-manager-worker\"}[$__range]))",
           "legendFormat": "Tasks",
           "range": true,
           "exemplar": true
@@ -306,7 +306,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (http_route) (rate(http_server_request_duration_seconds_count{service_name=\"challenge-web\"}[$__rate_interval]))",
+          "expr": "sum by (http_route) (rate(http_server_request_duration_seconds_count{service_name=\"task-manager-web\"}[$__rate_interval]))",
           "legendFormat": "{{http_route}}",
           "range": true,
           "exemplar": true
@@ -367,7 +367,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.5, sum by (le) (rate(http_server_request_duration_seconds_bucket{service_name=\"challenge-web\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.5, sum by (le) (rate(http_server_request_duration_seconds_bucket{service_name=\"task-manager-web\"}[$__rate_interval])))",
           "legendFormat": "P50",
           "range": true,
           "exemplar": true
@@ -379,7 +379,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_request_duration_seconds_bucket{service_name=\"challenge-web\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_request_duration_seconds_bucket{service_name=\"task-manager-web\"}[$__rate_interval])))",
           "legendFormat": "P95",
           "range": true,
           "exemplar": true
@@ -391,7 +391,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.99, sum by (le) (rate(http_server_request_duration_seconds_bucket{service_name=\"challenge-web\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(http_server_request_duration_seconds_bucket{service_name=\"task-manager-web\"}[$__rate_interval])))",
           "legendFormat": "P99",
           "range": true,
           "exemplar": true
@@ -452,7 +452,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (http_response_status_code) (rate(http_server_request_duration_seconds_count{service_name=\"challenge-web\"}[$__rate_interval]))",
+          "expr": "sum by (http_response_status_code) (rate(http_server_request_duration_seconds_count{service_name=\"task-manager-web\"}[$__rate_interval]))",
           "legendFormat": "{{http_response_status_code}}",
           "range": true,
           "exemplar": true
@@ -513,7 +513,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (task) (rate(flower_task_runtime_seconds_sum{service_name=\"challenge-worker\"}[$__rate_interval])) / sum by (task) (rate(flower_task_runtime_seconds_count{service_name=\"challenge-worker\"}[$__rate_interval]))",
+          "expr": "sum by (task) (rate(flower_task_runtime_seconds_sum{service_name=\"task-manager-worker\"}[$__rate_interval])) / sum by (task) (rate(flower_task_runtime_seconds_count{service_name=\"task-manager-worker\"}[$__rate_interval]))",
           "legendFormat": "{{task}}",
           "range": true,
           "exemplar": true
@@ -574,7 +574,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "max by (service_name, worker) (label_replace(process_cpu_utilization_ratio{service_name=~\"challenge-(web|worker)\"}, \"worker\", \"$1\", \"service_instance_id\", \"(.{8}).*\"))",
+          "expr": "max by (service_name, worker) (label_replace(process_cpu_utilization_ratio{service_name=~\"task-manager-(web|worker)\"}, \"worker\", \"$1\", \"service_instance_id\", \"(.{8}).*\"))",
           "legendFormat": "{{service_name}} {{worker}}",
           "range": true
         }
@@ -634,7 +634,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "max by (service_name, worker) (label_replace(process_memory_usage_bytes{service_name=~\"challenge-(web|worker)\"}, \"worker\", \"$1\", \"service_instance_id\", \"(.{8}).*\"))",
+          "expr": "max by (service_name, worker) (label_replace(process_memory_usage_bytes{service_name=~\"task-manager-(web|worker)\"}, \"worker\", \"$1\", \"service_instance_id\", \"(.{8}).*\"))",
           "legendFormat": "{{service_name}} {{worker}}",
           "range": true
         }
@@ -662,7 +662,7 @@
             "uid": "tempo"
           },
           "queryType": "traceql",
-          "query": "{ resource.service.name =~ \"challenge-(web|worker)\" && (kind = server || kind = consumer) }",
+          "query": "{ resource.service.name =~ \"task-manager-(web|worker)\" && (kind = server || kind = consumer) }",
           "limit": 20,
           "tableType": "traces"
         }
@@ -704,7 +704,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{service_name=~\"challenge-(web|worker)\"}",
+          "expr": "{service_name=~\"task-manager-(web|worker)\"}",
           "queryType": "range",
           "maxLines": 100
         }

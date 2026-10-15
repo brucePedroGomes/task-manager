@@ -50,7 +50,7 @@ console email.
 |---|---|---|
 | App | http://localhost:5173 | http://localhost:8080 |
 | API | http://localhost:8000/api/docs/ | http://localhost:8000/api/docs/ |
-| Grafana | http://localhost:3000/d/challenge-overview | same |
+| Grafana | http://localhost:3000/d/task-manager-overview | same |
 
 - Grafana user is `admin`. `make urls` shows the password from `backend/.env`.
 - Demo login: `bruce-gomes` / `Tempo-demo-2026!`. Demo data is only created when `DJANGO_DEBUG=true`.

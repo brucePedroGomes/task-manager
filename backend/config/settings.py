@@ -164,7 +164,7 @@ if DEBUG:
 
 ENABLE_API_DOCS = env.DJANGO_ENABLE_API_DOCS
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Challenge API',
+    'TITLE': 'Task Manager API',
     'VERSION': '0.1.0',
     'OAS_VERSION': '3.2.1',
     'SERVE_INCLUDE_SCHEMA': False,

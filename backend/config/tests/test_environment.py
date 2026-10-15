@@ -13,7 +13,7 @@ class EnvTests(TestCase):
             'DJANGO_JWT_SIGNING_KEY': 'test-only-jwt-signing-key-at-least-32-characters',
             'DJANGO_PASSWORD_PEPPER': 'ab' * 32,
             'DJANGO_EMAIL_HOST': 'smtp.example.com',
-            'DJANGO_EMAIL_FROM': 'challenge@example.com',
+            'DJANGO_EMAIL_FROM': 'task-manager@example.com',
             'DJANGO_CACHE_URL': 'redis://localhost:6379/0',
             'CELERY_BROKER_URL': 'redis://localhost:6379/1',
             'DB_NAME': 'test',

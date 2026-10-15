@@ -15,7 +15,7 @@ class SettingsTests(SimpleTestCase):
             'DJANGO_JWT_SIGNING_KEY': 'test-only-jwt-signing-key-at-least-32-characters',
             'DJANGO_PASSWORD_PEPPER': 'ab' * 32,
             'DJANGO_EMAIL_HOST': 'smtp.example.com',
-            'DJANGO_EMAIL_FROM': 'challenge@example.com',
+            'DJANGO_EMAIL_FROM': 'task-manager@example.com',
             'DJANGO_CACHE_URL': 'redis://localhost:6379/0',
             'CELERY_BROKER_URL': 'redis://localhost:6379/1',
             'DJANGO_ARGON2_TIME_COST': '3',
@@ -123,7 +123,7 @@ class SettingsTests(SimpleTestCase):
         self.assertEqual(
             settings['MAILERS']['default']['OPTIONS']['host'], 'smtp.example.com'
         )
-        self.assertEqual(settings['DEFAULT_FROM_EMAIL'], 'challenge@example.com')
+        self.assertEqual(settings['DEFAULT_FROM_EMAIL'], 'task-manager@example.com')
         self.assertEqual(settings['MAILERS']['default']['OPTIONS']['timeout'], 10)
 
     def test_staging_can_enable_docs_without_debug(self):
